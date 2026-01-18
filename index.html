@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -360,3 +361,367 @@ render();
 
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NM82 / V82 PDF Library</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  margin: 10px;
+}
+h2{
+  text-align:center;
+}
+input{
+  width:100%;
+  padding:10px;
+  font-size:16px;
+  margin-bottom:10px;
+}
+ul{
+  list-style:none;
+  padding:0;
+}
+li{
+  padding:8px;
+  border-bottom:1px solid #ddd;
+}
+a{
+  text-decoration:none;
+  color:#0066cc;
+  word-break:break-word;
+}
+</style>
+</head>
+
+<body>
+
+<h2>NM82 / V82 Manuals</h2>
+
+<input id="search" placeholder="Search PDF...">
+
+<ul id="list"></ul>
+
+<script>
+// 🔐 LOGIN CHECK
+if(!sessionStorage.getItem("role")){
+  window.location.href = "login.html";
+}
+
+// 📚 PDF LIST
+const pdfs = [
+"1 - Power Up - NM72,NM82,V82.pdf",
+"10 - Grid spike L2.pdf",
+"100 - Ambient Temp. high.pdf",
+"102 - Nacelle temp. high.pdf",
+"106 - Generator G Temp..pdf",
+"11 - Grid spike L3.pdf",
+"112 - Gear oil temp. high.pdf",
+"114 - gear bearing front temp high.pdf",
+"116 - Gear bear. rear temp. high.pdf",
+"118 - Main Bearing Temp. high.pdf",
+"12 - Grid drop voltage L1.pdf",
+"122 - Control panel temp. High.pdf",
+"124 - Thyristor temperature high.pdf",
+"125 - Thyristor temperature low.pdf",
+"13 - Grid drop voltage L2.pdf",
+"14 - Grid drop voltage L3.pdf",
+"140 - Phase comp. panel temp. High.pdf",
+"144 - Hub panel temp high.pdf",
+"146 - Generator bear. front temp. high.pdf",
+"148 - Generator bear. rear temp high.pdf",
+"150 - Pitch Oil Temp High..pdf",
+"152 - Main panel temp. High -.pdf",
+"154 - Top box temp. high.pdf",
+"163 - Water temp. after cooler low.pdf",
+"192 - Gear oil temp. high. short term_1.pdf",
+"193 - Gear oil temperature high long term.pdf",
+"198 - Untwist CW fault.pdf",
+"199 - Untwist CCW fault.pdf",
+"200 - Yaw box fault.pdf",
+"205 - Short Untwist CCW.pdf",
+"208 - Too long CW yaw.pdf",
+"209 - Too long CCW yaw.pdf",
+"212 - Nacelle position CW fault.pdf",
+"213 - Nacelle position CCW fault.pdf",
+"219 - Wind Sensor Fault.pdf",
+"220 - Wind speed signal mismatch.pdf",
+"221 - Wind direction signal mismatch.pdf",
+"222 - Wind sensor left fault.pdf",
+"223 - Wind sensor right fault.pdf",
+"225 - Short term yaw fault.pdf",
+"226 - 10 Minute Wind Speed High.pdf",
+"230 - 1 Sec Wind Speed High.pdf",
+"234 - Wind vane 1 fault.pdf",
+"235 - Wind vane 2 fault.pdf",
+"236 - Wind vane fault.pdf",
+"237 - Extreme Flap Moment Protection.pdf",
+"244 - EFM yaw error too high.pdf",
+"250 - Gearbox ratio fault.pdf",
+"251 - Generator Overspeed 1 - V82.pdf",
+"252 - Generator Overspeed 2 - V82.pdf",
+"253 - Cut-in overspeed.pdf",
+"254 - Rotor overspeed.pdf",
+"257- Nacelle position reset sensor fault.pdf",
+"26 - Error Cleared Warning Active.pdf",
+"260 - Generator speed sensor.pdf",
+"262 - Rotor speed sensor 1 fault..pdf",
+"290 - Lubr. pump overload - generator.pdf",
+"291 - Nacelle Fan Overload.pdf",
+"293 - Yaw motor 6 overload.pdf",
+"30_Asymetric Currecnt fast.pdf",
+"301 - Yaw motor 1 overload.pdf",
+"302 - Yaw motor 2 overload.pdf",
+"303 - Yaw motor 3 overload.pdf",
+"304 - Yaw motor 4 overload.pdf",
+"305 - Gear Oil Pump Overload.pdf",
+"307 - Water pump overload.pdf",
+"31 -Asymetric Current Slow.pdf",
+"311 - Yaw brake pump overload - V82.pdf",
+"312 - Pitch feeder pump overload.pdf",
+"313 - Pitch main pump overload - V82.pdf",
+"316 - Yaw motor 5 overload.pdf",
+"321 - Pump time Shaft brake too long.pdf",
+"322 - Pump time yaw brake too long.pdf",
+"323 - Pump time pitching too long.pdf",
+"324 - Pitch relief valve setting low.pdf",
+"329 - Too freq. pitch idle valve ops.pdf",
+"330 - Too freq. hub pump starts.pdf",
+"331 - Too Frequent Shaft Brake Recharge.pdf",
+"332 - Max lubr. faults - generator.pdf",
+"333 - Max missing lubr - generator.pdf",
+"340 - Shaft brake 1 hot -.pdf",
+"342 - shaft Brake 1 worn.pdf",
+"344 - Shaft brake 1 not released.pdf",
+"349 - Shaft brake locked error.pdf",
+"354 - Shaft brake slipping.pdf",
+"355 - Too slow rotation.pdf",
+"357 - Shaft Brake Not Released.pdf",
+"358 - Gearbox oil level pressure high.pdf",
+"359 - Pitch Oil Low.pdf",
+"362 - Gearbox oil low.pdf",
+"363 - Max no. of lubrication faults.pdf",
+"364 - Max no. of missing lubrication.pdf",
+"365 - Gear Oil Level Pressure Low.pdf",
+"368 - Hub pump inlet pressure low.pdf",
+"369 - Hub pump inlet pressure high.pdf",
+"371 - Shaft Brake pressure too High.pdf",
+"372 - Yaw Brake pressure too High.pdf",
+"376 - Shaft brake pressure too low.pdf",
+"377 - Yaw brake pressure too low.pdf",
+"378 - Active brake pressure too low.pdf",
+"379 - Gear oil pressure too low.pdf",
+"381 - Yaw brake not released.pdf",
+"382 - Yaw brake bypass valve defect.pdf",
+"384 - Hub filter clogged.pdf",
+"388 - Gear oil filter clogged.pdf",
+"389 - Feeder pump filter clogged.pdf",
+"391 - Speed sensor fault TAC84.pdf",
+"392 - Vibration sensor fault TAC84.pdf",
+"393 - Vibration TAC 84.pdf",
+"394 - Overspeed guard TAC84 - V82.pdf",
+"395 - Vibration in nacelle.pdf",
+"396 - Sensor fault direction TAC85.pdf",
+"397 - Over Speed Guard TAC85  - V82.pdf",
+"398 - TAC 84 com fault.pdf",
+"399 - TAC 85 com fault.pdf",
+"403 - Pitch ac. pressure deviation.pdf",
+"404 - Pitch accel. fault blade 1.pdf",
+"405 - Pitch accel. fault blade 2.pdf",
+"406 - Pitch accel. fault blade 3.pdf",
+"420 - Pitch sig mismatch blade 1.pdf",
+"421 - Pitch sig mismatch blade 2.pdf",
+"422 - Pitch sig mismatch blade 3 -.pdf",
+"432 - Blade 1 not at stop.pdf",
+"433 - Blade 2 not at stop.pdf",
+"434 - Blade 3 not at stop.pdf",
+"438 - Hub valve supply off.pdf",
+"440 - Hub hatch open.pdf",
+"445_Hub comp. com fault.pdf",
+"448 - Charging pitch in stop mode.pdf",
+"449 - Hub interlock triggered.pdf",
+"451 - Pitch seized.pdf",
+"453 - Pitching to run fault.pdf",
+"457 - Unbalanced pitch shutdown - V82.pdf",
+"459 - Run Pitch Pressure Low - V82.pdf",
+"463 - Pressure too high to move blade manually from stop.pdf",
+"468 - Pitch ac. pressure mismatch.pdf",
+"469 - Pitch ac. press. Sensor fault.pdf",
+"473_ Hub output supply unstalble.pdf",
+"474 - Pitch pos sensor fault blade A.pdf",
+"475 - Pitch pos sensor fault blade B.pdf",
+"476 - Pitch pos sensor fault blade C.pdf",
+"477- Pitch Pos sig unstable blade 1.pdf",
+"478 - Pitch Pos sig unstable blade 2.pdf",
+"479 - Pitch Pos sig unstable blade 3.pdf",
+"480 - Mode timeout fault.pdf",
+"485 - Too freq pitch recharge.pdf",
+"486 - Unbalanced Pitch - V82.pdf",
+"487 - Pitching to run fault blade 1.pdf",
+"488 - Pitching to run fault blade 2.pdf",
+"489 - Pitching to run fault blade 3 - V82.pdf",
+"49 - Vector Surge.pdf",
+"490 - Pitching to stop fault blade 1.pdf",
+"491 - Pitching to stop fault blade 2.pdf",
+"492 - Pitching to stop fault blade 3.pdf",
+"499 - Unbalanced Pitch Generation.pdf",
+"500 - 24 VDC Supply Off.pdf",
+"504 - Main CB 1 Tripped.pdf",
+"510 - CB tripped main panel.pdf",
+"511 - CB tripped valve supply.pdf",
+"512 - CB Tripped Hub Supply.pdf",
+"515 - Emergency relay open.pdf",
+"516 - Safety relay open.pdf",
+"518 - 24 VDC Supply off top box.pdf",
+"530 - Gen G contactor open.pdf",
+"532 - By-pass contactor open.pdf",
+"563 - Thyristor fuse blown.pdf",
+"564 - Pitch Soft Starter Fault.pdf",
+"590 - TAC 84 downwind com fault.pdf",
+"591 - Speed sensor fault TAC84 downwind.pdf",
+"593 - Vibration TAC84 Downwind.pdf",
+"594 - TAC84 fault - downwind.pdf",
+"595 - TAC 84 lateral com. Fault.pdf",
+"596 - Speed sensor fault TAC84 lateral.pdf",
+"598 - Vibration TAC84 lateral.pdf",
+"599 - TAC84 fault.pdf",
+"6 - Low Voltage L1.pdf",
+"60 - Low frequency L1.pdf",
+"602 - Emergency stop.pdf",
+"603 - Safety Stop.pdf",
+"63 - High frequency L1.pdf",
+"632 - By-pass contactor closed.pdf",
+"684 - Transient - Control panel.pdf",
+"686 - Battery charger fault.pdf",
+"687 - Battery voltage low.pdf",
+"7 - Low Voltage L2.pdf",
+"750 - Safety line test fault.pdf",
+"754 - Pitch press test fault blade 1.pdf",
+"755 - Pitch press test fault blade 2.pdf",
+"756 - Pitch press test fault blade 3.pdf",
+"758 - Hub valve supply test fault.pdf",
+"780 - An external generator is supplying auxiliary power when grid is off.pdf",
+"8 - Low Voltage L3.pdf",
+"800 - Phase comp. 1 fault.pdf",
+"801 - Phase comp. 2 fault.pdf",
+"802 - Phase comp. 3 fault.pdf",
+"803 - Phase comp. 4 fault.pdf",
+"804 - Phase comp. 5 fault.pdf",
+"823 - Thyristor L1 short circuit.pdf",
+"824- Thyristor L2 short circuit.pdf",
+"825 - Thyristor L3 short circuit.pdf",
+"826 - Pt100 fault gen Jct. box cable.pdf",
+"827 - Pt100 fault gen junction box air temperature.pdf",
+"83 - Power gen. G high.pdf",
+"833 - Pt100 fault water after cooler 2.pdf",
+"835 - Power Consumption sensor fault.pdf",
+"837 - Press. sensor fault brake Acc.pdf",
+"841 - Press. sensor fault shaft brake.pdf",
+"842 - Pressure sensor fault hub inlet.pdf",
+"843 - Press. sensor fault Yaw Brake.pdf",
+"844 - Press sensor fault gear oil.pdf",
+"848 - Pt100 fault interm. gear front.pdf",
+"849 - Pt100 fault interm. gear rear.pdf",
+"851 - PT 100 Fault Pitch Accumulator.pdf",
+"860 - PT100 fault generator G.pdf",
+"862 - PT100 Fault Ambient.pdf",
+"863 - PT100 fault pitch oil.pdf",
+"865 - PT100 fault main panel.pdf",
+"866 - PT100 fault Nacelle.pdf",
+"869 - Pt100 fault gear bearing front.pdf",
+"87 - Negative Power Gen G.pdf",
+"870 -Pt100 fault gear bear. rear - NM72,NM82,V82 Mk1-5.pdf",
+"871 - Pt100 fault main bearing - NM72,NM82,V82 Mk1-5.pdf",
+"876 - PT100 fault gen. bear. front - V82.pdf",
+"878 - PT100 fault hub panel - NM72,NM82,V82 Mk1-5.pdf",
+"880 - Pt100 fault water before cooler - NM72,NM82,V82 Mk1-5.pdf",
+"881 - PT100 fault water after cooler - V82.pdf",
+"882 - Pt100 fault gear oil exchanger NM72 NM82 V82 Mk1-5.pdf",
+"888 - Pt100 fault control panel - NM72,NM82,V82 Mk1-5.pdf",
+"889 - Pt100 fault phase comp - NM72NM82V82 Mk1-5.pdf",
+"890 - Pt100 fault tower base - NM72,NM82,V82 Mk1-5.pdf",
+"891 - Pt100 fault top box - NM72,NM82,V82 Mk1-5.pdf",
+"9 - Grid spike L1 - NM72,NM82,V82 Mk1-5.pdf",
+"930 - Internal battery low - NM72,NM82,V82 Mk1-5.pdf",
+"96 - Generator cable temp high - NM72,NM82,V82.pdf",
+"97 - Generator jct box air temp high - NM72,NM82,V82.pdf",
+"981 - Cut-in phase sequence fault - V82 MK5.pdf",
+"982 - Cut-in frequency fault - V82.pdf",
+"984 - Cut-in peak current L1 - NM72,NM82,V82 Mk1-5.pdf",
+"985 - Cut-in peak current L2 - NM72,NM82,V82 Mk1-5.pdf",
+"986 - Cut-in peak current L3 - NM72,NM82,V82 Mk1-5.pdf",
+"987 - Cut-in avg. current L1 - V82.pdf",
+"988 - Cut-in avg. current L2 - V82.pdf",
+"989 - Cut-in avg. current L3 - V82.pdf",
+"992 - TOI number 1 comm. Fault - NM72,NM82,V82 MK1-5.pdf",
+"993 - TOI number 2 comm. Fault - V82.pdf",
+"998 - Max Stop Time - NM7282 V82 1.5-1.65MW EVO-I & II.pdf",
+"999 - Max Automatic reset times - NM7282 V82 1.5-1.65MW EVO-I & II.pdf",
+"Alarm_470 Error & Alarm.pdf",
+"AVN-BK07_Version-10_1.pdf",
+"AVN-Combi unit Brake applied back pressure.pdf",
+"AVN-Combi unit Brake applied without  back pressure.pdf",
+"AVN-Combi unit Brake release.pdf",
+"AVN-Combi unit Emergencystop.pdf",
+"AVN-Combi unit grid drop.pdf",
+"Electrical diagram Mk -01.pdf",
+"Electrical diagram MK 2.pdf",
+"Electrical diagram MK 3.pdf",
+"Electrical diagram MK 4 & 5.pdf",
+"Installation and Service Data-V82.pdf",
+"Installation Instruction-V82.pdf",
+"lesson1.pdf",
+"parker blade manifold - Pitch to run.pdf",
+"Parker blade manifold - Pitch to stop.pdf",
+"parker blademanifold - E-shutdown speedcontrol.pdf",
+"Parker main manifold Circuit Supply unit - Pump ideling.pdf",
+"Parker main manifold Circuit Supply unit - Pump pressurezing.pdf",
+"parker main manifold Parking mode.pdf",
+"Parker mainmanifold - Service mode pitching.pdf",
+"Rexrorth blade manifold Component Purpose.pdf",
+"Rexrorth Blade manifold Emergency shutdown & speed control.pdf",
+"Rexrorth main manifold - Component purpose.pdf",
+"Rexrorth main manifold  Normal operation pump pressurerizing.pdf",
+"Rexroth blade manifold Normal operation Pitch to run.pdf",
+"Rexroth blade manifold Normal operation Pitch to stop.pdf",
+"Rexroth blade manifold Parking Mode.pdf",
+"Rexroth Main manifold Servicemode - Pitching.pdf",
+"Rexroth mainmanifold Normal operation Pump Ideling.pdf",
+"Shaft brake hydralic unit APPLIED BY EMERGENCY STOP COLOUR.pdf",
+"Shaft brake hydralic unit APPLIED COLOUR.pdf",
+"Shaft brake hydralic unit GRID LOSS COLOUR.pdf",
+"Shaft brake hydralic unit RELEASED COLOUR.pdf",
+"Troubleshooting on combi hydraulics-AVN.pdf",
+"Yaw hydralic unit brake APPLIED COLOUR.pdf",
+"Yaw hydralic unit WITH DRAG PRESSURE COLOUR.pdf",
+"Yaw hydralic unit WITH OUT  PRESSURE COLOUR.pdf"
+];
+
+// 🔍 SEARCH + RENDER
+const list = document.getElementById("list");
+const search = document.getElementById("search");
+
+function render(filter=""){
+  list.innerHTML="";
+  pdfs
+    .filter(p=>p.toLowerCase().includes(filter.toLowerCase()))
+    .forEach(p=>{
+      const li=document.createElement("li");
+      li.innerHTML=`<a href="Pdf/${encodeURIComponent(p)}" target="_blank">${p}</a>`;
+      list.appendChild(li);
+    });
+}
+
+search.addEventListener("input",e=>render(e.target.value));
+render();
+</script>
+
+</body>
+</html>
+>>>>>>> 07b4d115ffcacdc17b61a995d7669fa9eed564e6
